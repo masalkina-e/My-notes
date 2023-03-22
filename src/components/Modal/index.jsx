@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-function Modal(props) {
-    const { toggleModal, addNewNote } = props
+function Modal({ toggleModal, addNewNote }) {
+
     const [newText, setNewText] = useState('')
     
     function onClick(event) {
