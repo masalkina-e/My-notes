@@ -1,18 +1,43 @@
 import 'components/App/app.css';
 import Modal from 'components/Modal';
 import ModalEdit from 'components/ModalEdit';
+import Notes from 'components/Notes';
 import { useState } from 'react';
 
 function App() {
-
-  const [notes, renderNotes] = useState(
+  const [notes, setNotes] = useState(
     ['Заметка 1','Заметка 2']
   )
+
+  function addNewNote(newNote) {
+    const newNotes = [...notes, newNote]
+    setNotes(newNotes)
+  }
+
+  function editNote(id) {
+    toggleModal()
+    let newNotes = [...notes]
+    let newNote = newNotes.find((newNote) => {
+      return newNote.id === id
+    })
+
+    const index = newNotes.indexOf(newNote)
+    newNotes.splice(index, 1, newNote)
+
+    setNotes(newNotes)
+  }
+
+  function deleteNote(id) {
+    const filteredNote = notes.filter(note => note.id !== id)
+    setNotes(filteredNote)
+  }
 
   const [isOpen, setIsOpen] = useState(false)
 
   function toggleModal() {
-    if (isOpen === true && <Modal />) {
+    if (isOpen === true){
+      setIsOpen(false)
+    } else {
       setIsOpen(true)
     }
   }
@@ -20,26 +45,19 @@ function App() {
   return (
     <div>
       <header className="bg-orange-100">
-        <div className="mx-auto mb-28 px-10">
-          <button onClick={toggleModal} className="border-0 bg-orange-100 cursor-pointer py-5 px-0 text-3xl text-orange-600">+</button>
+        <div className="mx-auto mb-28 px-40">
+          <button onClick={toggleModal} className="border-0 bg-orange-100 cursor-pointer py-5 px-0 text-3xl text-orange-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+          </button>
         </div>
       </header>
 
-      <div className='mx-auto mb-28 px-10'>
+      <div className='mx-auto mb-28 px-40'>
         <h1 className='text-center py-12 text-5xl'>My notes</h1>
-        <Modal />
-        <ModalEdit />
-        <div className='border border-black rounded-xl bg-white p-5 gap-2.5 flex flex-col'>
-            {notes.map((note) => {
-                return (
-                <div className='flex flex-row border-b border-black last:border-b-0'>
-                   <p className='pb-2.5 w-full cursor-pointer text-justify pr-2.5'>{note}</p>
-                   <button>Удалить</button>
-                </div>
-                )
-            })}
-        </div> 
-        <p className='flex justify-center pt-24 text-orange-400 hidden'>Заметок нет</p>
+        {isOpen === true && <Modal toggleModal={toggleModal} addNewNote={addNewNote}/>}
+        {isOpen === true && <ModalEdit notes={notes}/>}
+        {notes.length > 0 && <Notes editNote={editNote} deleteNote={deleteNote} notes={notes}/>}
+        {notes.length === 0 && <p className='flex justify-center pt-24 text-orange-400'>Заметок нет</p>}
       </div>
     </div>
   );
