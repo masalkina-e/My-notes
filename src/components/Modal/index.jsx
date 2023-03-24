@@ -1,13 +1,18 @@
 import { useState } from "react"
+import uuid4 from "uuid4"
 
 function Modal({ toggleModal, addNewNote }) {
-
+    const id = uuid4()
     const [newText, setNewText] = useState('')
     
     function onClick(event) {
         event.preventDefault()
 
-        const newNote = newText
+        const newNote = {
+            id: id,
+            name: newText
+        }
+        
         addNewNote(newNote)
         toggleModal()
     }

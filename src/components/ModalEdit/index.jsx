@@ -1,9 +1,8 @@
-import { render } from "@testing-library/react"
 import { useState } from "react"
 
 function ModalEdit({ toggleEditModal, noteForEdit, renderEditNotes}) {
   
-    const [ editText, setEditText] = useState({noteForEdit})
+    const [ editText, setEditText] = useState(noteForEdit.name)
 
     function onClick(event) {
         event.preventDefault()

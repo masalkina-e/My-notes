@@ -30,17 +30,14 @@ function App() {
     })
     console.log(newNote)
     setNoteForEdit(newNote)
-
   }
 
   function renderEditNotes(newNote) {
     let newNotes = [...notes]
-
-    const index = newNotes.indexOf(newNote)
+    const currentNote = newNotes.find((note) => note.id === newNote.id)
+    const index = newNotes.indexOf(currentNote)
     newNotes.splice(index, 1, newNote)
-
     setNotes(newNotes)
-
   }
 
   function deleteNote(id) {
